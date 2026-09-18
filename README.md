@@ -153,6 +153,8 @@ Execute `build_ttf.sh` with an `fontType` option.
 
 Then, you can get a `FluentEmoji***.ttf` files after long (about half an hour) time build.
 
+The `build` folder is kept between builds, and `build_ttf.sh` reuses the font already built in it. After updating the `fluentui-emoji` submodule, run `./build_ttf01.sh <FONTTYPE>` before `build_ttf.sh`: only the emoji that changed are processed again. Delete the `build` folder to build from scratch.
+
 #### COLRv1-only variant
 Add `colrv1` as a second option to get a font with COLRv1 color glyphs only (no OT-SVG table, no CBDT bitmaps).
 
