@@ -153,8 +153,19 @@ Execute `build_ttf.sh` with an `fontType` option.
 
 Then, you can get a `FluentEmoji***.ttf` files after long (about half an hour) time build.
 
+#### COLRv1-only variant
+Add `colrv1` as a second option to get a font with COLRv1 color glyphs only (no OT-SVG table, no CBDT bitmaps).
+
+```shell
+./build_ttf.sh color colrv1
+```
+
+- Options: `full` (default) or `colrv1`
+
+The default (`full`) font also embeds an OT-SVG table and CBDT bitmaps. Gecko based apps (Firefox, Thunderbird...) prefer OT-SVG over COLRv1, and in the `color` font about 950 glyphs share a single ~36 MB SVG document: the first time one of those emoji is displayed, the whole document is parsed on the main thread, freezing the app for several seconds. The `colrv1` variant avoids this and is much smaller (~8 MB instead of ~88 MB for `color`), while rendering the same in any COLRv1 capable app (Chrome, Firefox, Thunderbird, and on Linux, apps using cairo >= 1.18).
+
 ### Via GitHub Actions
-Now we can build with GitHub Actions! Just access to [build workflow page](https://github.com/tetunori/fluent-emoji-webfont/actions/workflows/buildFont.yml) and press `Run workflow` buttton with any Font Format/Font Type as you like. Built artifact will be attached in the result page as a `Font` zip file.  
+Now we can build with GitHub Actions! Just access to [build workflow page](https://github.com/tetunori/fluent-emoji-webfont/actions/workflows/buildFont.yml) and press `Run workflow` buttton with any Font Format/Font Type (and TTF Variant) as you like. Built artifact will be attached in the result page as a `Font` zip file.  
 > [!IMPORTANT] 
 > For only making `color` ttf font, Please select `macos-latest` in `runs-on` property. Otherwise, it fails due to the time restriction(6 hours) of GitHub Actions. If fails even with the `macos-latest` setting, execute twice. The second time the cache will be used and the job time will be reduced.  
 

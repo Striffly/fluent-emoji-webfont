@@ -21,6 +21,12 @@ on:
         - flat
         - hc
         - hc-inv
+      ttfVariant:
+        type: choice
+        description: TTF Variant (ttf only)
+        options:
+        - full    # COLRv1 + OT-SVG + CBDT bitmaps
+        - colrv1  # COLRv1 only
       runsOn:
         type: choice
         description: runs-on
@@ -39,6 +45,7 @@ jobs:
           echo "|---------|-------|" >> $GITHUB_STEP_SUMMARY
           echo "| **fontFormat** | ${{ inputs.fontFormat }} |" >> $GITHUB_STEP_SUMMARY
           echo "| **fontType** | ${{ inputs.fontType }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **ttfVariant** | ${{ inputs.ttfVariant }} |" >> $GITHUB_STEP_SUMMARY
           echo "| **runsOn** | ${{ inputs.runsOn }} |" >> $GITHUB_STEP_SUMMARY
   font-build:
     runs-on: ${{inputs.runsOn}}
@@ -84,7 +91,12 @@ jobs:
           key: ${{ runner.os }}-${{ github.sha }}-${{inputs.fontType}}
       # Build font
       - name: Build font
-        run: ./build_${{inputs.fontFormat}}.sh ${{inputs.fontType}}
+        run: |
+          if [ "${{inputs.fontFormat}}" = 'ttf' ]; then
+            ./build_ttf.sh ${{inputs.fontType}} ${{inputs.ttfVariant}}
+          else
+            ./build_woff2.sh ${{inputs.fontType}}
+          fi
       # Upload Artifact
       - name: Upload Font
         uses: actions/upload-artifact@v4
