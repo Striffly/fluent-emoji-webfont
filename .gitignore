@@ -163,3 +163,7 @@ cython_debug/
 # Test artifact
 test/confirmDist/tmp-woff2
 test/confirmDist/tmp-ttf
+
+# Local builds (build_ttf_nosvg.sh)
+out/
+build.prev/
